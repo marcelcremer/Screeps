@@ -30,7 +30,7 @@ export class CreepSpawner {
         if (this.harvesters.length < this.amount)
             this.spawnCreep(General.HOME_BASE, Profiles.SMALL_WORKER, 'harvester');
         else if (this.upgrader.length < this.amount + 1)
-            this.spawnCreep(General.HOME_BASE, Profiles.SMALL_RUNNER, 'upgrader');
+            this.spawnCreep(General.HOME_BASE, Profiles.SMALL_WORKER, 'upgrader');
         else if (this.builder.length < this.amount)
             this.spawnCreep(General.HOME_BASE, Profiles.SMALL_WORKER, 'builder');
     }

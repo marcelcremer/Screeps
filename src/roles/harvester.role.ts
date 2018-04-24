@@ -1,17 +1,20 @@
 export var roleHarvester = {
     /** @param {Creep} creep **/
-    run: function (creep) {
-        if (creep.carry.energy < creep.carryCapacity) {
+    run: function (creep: Creep) {
+        if ((creep.carry.energy == 0 && (!creep.memory['action'] || creep.memory['action'] == 'transferring')) || creep.memory['action'] == 'harvesting') {
+            creep.memory['action'] = 'harvesting';
             var sources = creep.room.find(FIND_SOURCES);
             if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[0], { visualizePathStyle: { stroke: '#ffaa00' } });
             }
+            if (creep.carry.energy == creep.carryCapacity)
+                creep.memory['action'] = 'transferring';
         }
         else {
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-                        structure.energy < structure.energyCapacity;
+                    return ([STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TOWER].indexOf(<any>structure.structureType) > -1) &&
+                        (<any>structure).energy < (<any>structure).energyCapacity;
                 }
             });
             if (targets.length > 0) {
@@ -21,13 +24,16 @@ export var roleHarvester = {
             }
             else {
                 targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: structure => { return structure.structurtype == STRUCTURE_ROAD && structure.hits < structure.hitsMax; }
+                    filter: structure => { return [STRUCTURE_RAMPART, STRUCTURE_ROAD].indexOf((<any>structure).structureType) > -1 && (<any>structure).hits < (<any>structure).hitsMax}
                 });
-                console.log(targets);
                 if (targets.length > 0) {
                     if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
                     }
+                }
+                else {
+                    var sources = creep.room.find(FIND_SOURCES);
+                    creep.moveTo(sources[0], { visualizePathStyle: { stroke: '#ffaa00' } });
                 }
             }
         }
