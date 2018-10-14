@@ -86,3 +86,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Compiled js
+src/**/*.js*

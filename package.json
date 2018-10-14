@@ -3,33 +3,43 @@
   "version": "3.0.0",
   "description": "",
   "main": "index.js",
-  "//": "If you add or change the names of destinations in screeps.json, make sure you update these scripts to reflect the changes",
   "scripts": {
-    "build": "rollup -cw --dest main"
+    "test": "nyc node testing/test-build",
+    "test:lint": "tslint -c tslint.json -p tsconfig.json",
+    "test:watch": "start supervisor -n exit -w src,conf -e js,json testing/test-watch.js",
+    "test:report:html": "nyc report --reporter=html",
+    "test:report": "nyc report --reporter=text-summary",
+    "compile": "tsc -p tsconfig.json",
+    "compile:watch": "tsc -p tsconfig.json -w",
+    "build": "rollup -cw",
+    "deploy": "rollup -cw --dest main"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/screepers/screeps-typescript-starter.git"
-  },
-  "author": "",
-  "license": "Unlicense",
-  "bugs": {
-    "url": "https://github.com/screepers/screeps-typescript-starter/issues"
-  },
-  "homepage": "https://github.com/screepers/screeps-typescript-starter#readme",
+  "author": "Marcel Cremer",
+  "license": "Unlicensed",
   "devDependencies": {
+    "@types/jasmine": "^2.8.9",
     "@types/lodash": "^3.10.1",
     "@types/screeps": "^2.1.0",
+    "concurrently": "^4.0.1",
+    "jasmine": "^3.2.0",
+    "jasmine-console-reporter": "^3.1.0",
+    "nyc": "^13.0.1",
+    "prettier": "^1.14.3",
     "rollup": "^0.55.3",
     "rollup-plugin-clean": "^1.0.0",
+    "rollup-plugin-cleanup": "^3.0.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-screeps": "^0.1.2",
     "rollup-plugin-typescript2": "^0.11.0",
     "tslint": "^5.8.0",
+    "tslint-language-service": "^0.9.9",
     "typescript": "^2.7.1"
   },
   "dependencies": {
-    "source-map": "~0.6.1"
+    "source-map": "~0.6.1",
+    "supervisor": "^0.12.0",
+    "tslint-consistent-codestyle": "^1.13.3",
+    "tslint-sonarts": "^1.8.0"
   }
 }
